@@ -1,0 +1,57 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'scala'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'reactive'
+	version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile 'org.scala-lang:scala-library:2.11.8'
+}
+
+tasks.withType(ScalaCompile) {
+	scalaCompileOptions.useAnt = false
+}
+
+configurations.all {
+	exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+}
+
+dependencies {
+	compile 'org.slf4j:slf4j-api:1.7.7'
+
+	compile('org.springframework.boot:spring-boot-starter')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+	compile 'org.projectlombok:lombok:1.14.8'
+	compile group: 'org.reactivestreams', name: 'reactive-streams', version: '1.0.0'
+	compile group: 'io.projectreactor', name: 'reactor-core', version: '3.0.4.RELEASE'
+
+	compile 'org.apache.kafka:kafka_2.11:0.10.2.0'
+	compile 'org.apache.kafka:kafka-streams:0.10.2.0'
+
+	compile group: 'com.typesafe.akka', name: 'akka-actor_2.11', version: '2.4.16'
+	compile group: 'org.scala-lang', name: 'scala-library', version: '2.12.2'
+
+}
